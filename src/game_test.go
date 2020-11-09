@@ -94,3 +94,6 @@ func TestCompareSlices(t *testing.T) {
 // 	}
 // }
 // --------------------------------------------------------------------------
+// suppose to make some changes here for testing
+// func testShit()
+// 		etc...

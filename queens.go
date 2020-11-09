@@ -6,6 +6,7 @@ import (
 	game "example.com/user/queens/src"
 )
 
+//
 func main() {
 	queensPtr := flag.Int("num", 4, "Game with given queens. MAX=25. num=4")
 	shortDisplayPtr := flag.Bool("shortDisplay", false, "Option for short Display list")

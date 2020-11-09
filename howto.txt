@@ -1,0 +1,11 @@
+go mod init example/user/queens
+    create the queens.go (hello world)
+go build queens.go
+go install example/user/queens
+    create new folder name whatever in this case src
+    create new file in this case u1.go
+    create a really stupid func in it
+go build u1.go
+    inside main program import "example.com/user/queens/src"
+go build queend.go
+    

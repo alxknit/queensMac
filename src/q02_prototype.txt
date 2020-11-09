@@ -1,0 +1,419 @@
+"""
+Program Queens
+Finds all possible queens set in specific size board
+
+"""
+
+
+def my_timer(orig_func):
+    import time
+    from functools import wraps
+
+    @wraps(orig_func)
+    def wrapper(*args, **kwargs):
+        t1 = time.time()
+        result = orig_func(*args, **kwargs)
+        t2 = time.time() - t1
+        print("{} ran in: {} sec".format(orig_func.__name__, t2))
+        return result
+
+    return wrapper
+
+
+class QueensNumPy:
+    def __init__(self, size):
+        self.size = size
+        self.possitions = [0] * size
+        # self.pool = list(range(1, self.size + 1))
+
+    def checkPossition(self, pos=0, value=0):
+
+        countMinus = 0
+        countPlus = 0
+        if pos == 0:
+            return True
+
+        else:
+            # VIN
+            # this was made in original with while
+            # and it was extreamly more time consuming
+
+            for x in range(pos - 1, -1, -1):
+                countMinus += 1
+                countPlus += 1
+                valueOnPossitons = self.possitions[x]
+                if valueOnPossitons == value:
+                    return False
+                if value + countPlus == valueOnPossitons:
+                    return False
+                if value - countMinus == valueOnPossitons:
+                    return False
+
+        return True
+
+    def display(self):
+        return
+        for row in range(self.size):
+            for column in range(self.size):
+                if row + 1 == self.possitions[column]:
+                    print("Q", end=" ")
+                else:
+                    print(".", end=" ")
+            print()
+
+    def line(self, posX, fromValue=1):
+        if fromValue == self.size + 1:
+            return False
+
+        start = fromValue
+        # pool = self.pool[fromValue:]
+        for val in range(start, self.size + 1):
+            if self.checkPossition(posX, value=val):
+                self.possitions[posX] = val
+                return True
+        else:
+            return False
+
+    @my_timer
+    def solve(self):
+        solutions = 0
+        pos = queens = 0
+        fromValue = 1
+
+        while True:
+
+            res = self.line(pos, fromValue)
+
+            if res:
+                # sum = Counter([x.value for x in self.tiles.values()])
+                queens += 1
+                if queens == self.size:
+                    # all Queens on place = solution
+                    solutions += 1
+                    print()
+                    print("Solution no {}".format(solutions))
+                    print(self.possitions)
+                    self.display()
+
+                    self.possitions[pos] = 0
+                    queens -= 2
+                    pos -= 1
+                    fromValue = self.possitions[pos]
+                    fromValue += 1
+                    self.possitions[pos] = 0
+                    continue
+                else:
+                    fromValue = 1
+                    pos += 1
+
+            else:
+                # backtrack
+                pos -= 1
+                if pos == -1:
+                    if solutions == 0:
+                        print("No solution")
+                    break
+
+                fromValue = self.possitions[pos]
+                fromValue += 1
+                self.possitions[pos] = 0
+                queens -= 1
+
+        print("Number of solutions = {}".format(solutions))
+
+
+if __name__ == "__main__":
+    g = QueensNumPy(8)
+    g.solve()
+
+"""
+Sum of solutions find = 14200
+solveHowMany ran in: 220.6749291419983 sec
+Sum of solutions find = 14200
+solveHowMany ran in: 172.60322880744934 sec
+With matrix is very much slower
+It is ever worst from recursion/game...
+
+Solution no 1
+[1, 5, 8, 6, 3, 7, 2, 4]
+
+Solution no 2
+[1, 6, 8, 3, 7, 4, 2, 5]
+
+Solution no 3
+[1, 7, 4, 6, 8, 2, 5, 3]
+
+Solution no 4
+[1, 7, 5, 8, 2, 4, 6, 3]
+
+Solution no 5
+[2, 4, 6, 8, 3, 1, 7, 5]
+
+Solution no 6
+[2, 5, 7, 1, 3, 8, 6, 4]
+
+Solution no 7
+[2, 5, 7, 4, 1, 8, 6, 3]
+
+Solution no 8
+[2, 6, 1, 7, 4, 8, 3, 5]
+
+Solution no 9
+[2, 6, 8, 3, 1, 4, 7, 5]
+
+Solution no 10
+[2, 7, 3, 6, 8, 5, 1, 4]
+
+Solution no 11
+[2, 7, 5, 8, 1, 4, 6, 3]
+
+Solution no 12
+[2, 8, 6, 1, 3, 5, 7, 4]
+
+Solution no 13
+[3, 1, 7, 5, 8, 2, 4, 6]
+
+Solution no 14
+[3, 5, 2, 8, 1, 7, 4, 6]
+
+Solution no 15
+[3, 5, 2, 8, 6, 4, 7, 1]
+
+Solution no 16
+[3, 5, 7, 1, 4, 2, 8, 6]
+
+Solution no 17
+[3, 5, 8, 4, 1, 7, 2, 6]
+
+Solution no 18
+[3, 6, 2, 5, 8, 1, 7, 4]
+
+Solution no 19
+[3, 6, 2, 7, 1, 4, 8, 5]
+
+Solution no 20
+[3, 6, 2, 7, 5, 1, 8, 4]
+
+Solution no 21
+[3, 6, 4, 1, 8, 5, 7, 2]
+
+Solution no 22
+[3, 6, 4, 2, 8, 5, 7, 1]
+
+Solution no 23
+[3, 6, 8, 1, 4, 7, 5, 2]
+
+Solution no 24
+[3, 6, 8, 1, 5, 7, 2, 4]
+
+Solution no 25
+[3, 6, 8, 2, 4, 1, 7, 5]
+
+Solution no 26
+[3, 7, 2, 8, 5, 1, 4, 6]
+
+Solution no 27
+[3, 7, 2, 8, 6, 4, 1, 5]
+
+Solution no 28
+[3, 8, 4, 7, 1, 6, 2, 5]
+
+Solution no 29
+[4, 1, 5, 8, 2, 7, 3, 6]
+
+Solution no 30
+[4, 1, 5, 8, 6, 3, 7, 2]
+
+Solution no 31
+[4, 2, 5, 8, 6, 1, 3, 7]
+
+Solution no 32
+[4, 2, 7, 3, 6, 8, 1, 5]
+
+Solution no 33
+[4, 2, 7, 3, 6, 8, 5, 1]
+
+Solution no 34
+[4, 2, 7, 5, 1, 8, 6, 3]
+
+Solution no 35
+[4, 2, 8, 5, 7, 1, 3, 6]
+
+Solution no 36
+[4, 2, 8, 6, 1, 3, 5, 7]
+
+Solution no 37
+[4, 6, 1, 5, 2, 8, 3, 7]
+
+Solution no 38
+[4, 6, 8, 2, 7, 1, 3, 5]
+
+Solution no 39
+[4, 6, 8, 3, 1, 7, 5, 2]
+
+Solution no 40
+[4, 7, 1, 8, 5, 2, 6, 3]
+
+Solution no 41
+[4, 7, 3, 8, 2, 5, 1, 6]
+
+Solution no 42
+[4, 7, 5, 2, 6, 1, 3, 8]
+
+Solution no 43
+[4, 7, 5, 3, 1, 6, 8, 2]
+
+Solution no 44
+[4, 8, 1, 3, 6, 2, 7, 5]
+
+Solution no 45
+[4, 8, 1, 5, 7, 2, 6, 3]
+
+Solution no 46
+[4, 8, 5, 3, 1, 7, 2, 6]
+
+Solution no 47
+[5, 1, 4, 6, 8, 2, 7, 3]
+
+Solution no 48
+[5, 1, 8, 4, 2, 7, 3, 6]
+
+Solution no 49
+[5, 1, 8, 6, 3, 7, 2, 4]
+
+Solution no 50
+[5, 2, 4, 6, 8, 3, 1, 7]
+
+Solution no 51
+[5, 2, 4, 7, 3, 8, 6, 1]
+
+Solution no 52
+[5, 2, 6, 1, 7, 4, 8, 3]
+
+Solution no 53
+[5, 2, 8, 1, 4, 7, 3, 6]
+
+Solution no 54
+[5, 3, 1, 6, 8, 2, 4, 7]
+
+Solution no 55
+[5, 3, 1, 7, 2, 8, 6, 4]
+
+Solution no 56
+[5, 3, 8, 4, 7, 1, 6, 2]
+
+Solution no 57
+[5, 7, 1, 3, 8, 6, 4, 2]
+
+Solution no 58
+[5, 7, 1, 4, 2, 8, 6, 3]
+
+Solution no 59
+[5, 7, 2, 4, 8, 1, 3, 6]
+
+Solution no 60
+[5, 7, 2, 6, 3, 1, 4, 8]
+
+Solution no 61
+[5, 7, 2, 6, 3, 1, 8, 4]
+
+Solution no 62
+[5, 7, 4, 1, 3, 8, 6, 2]
+
+Solution no 63
+[5, 8, 4, 1, 3, 6, 2, 7]
+
+Solution no 64
+[5, 8, 4, 1, 7, 2, 6, 3]
+
+Solution no 65
+[6, 1, 5, 2, 8, 3, 7, 4]
+
+Solution no 66
+[6, 2, 7, 1, 3, 5, 8, 4]
+
+Solution no 67
+[6, 2, 7, 1, 4, 8, 5, 3]
+
+Solution no 68
+[6, 3, 1, 7, 5, 8, 2, 4]
+
+Solution no 69
+[6, 3, 1, 8, 4, 2, 7, 5]
+
+Solution no 70
+[6, 3, 1, 8, 5, 2, 4, 7]
+
+Solution no 71
+[6, 3, 5, 7, 1, 4, 2, 8]
+
+Solution no 72
+[6, 3, 5, 8, 1, 4, 2, 7]
+
+Solution no 73
+[6, 3, 7, 2, 4, 8, 1, 5]
+
+Solution no 74
+[6, 3, 7, 2, 8, 5, 1, 4]
+
+Solution no 75
+[6, 3, 7, 4, 1, 8, 2, 5]
+
+Solution no 76
+[6, 4, 1, 5, 8, 2, 7, 3]
+
+Solution no 77
+[6, 4, 2, 8, 5, 7, 1, 3]
+
+Solution no 78
+[6, 4, 7, 1, 3, 5, 2, 8]
+
+Solution no 79
+[6, 4, 7, 1, 8, 2, 5, 3]
+
+Solution no 80
+[6, 8, 2, 4, 1, 7, 5, 3]
+
+Solution no 81
+[7, 1, 3, 8, 6, 4, 2, 5]
+
+Solution no 82
+[7, 2, 4, 1, 8, 5, 3, 6]
+
+Solution no 83
+[7, 2, 6, 3, 1, 4, 8, 5]
+
+Solution no 84
+[7, 3, 1, 6, 8, 5, 2, 4]
+
+Solution no 85
+[7, 3, 8, 2, 5, 1, 6, 4]
+
+Solution no 86
+[7, 4, 2, 5, 8, 1, 3, 6]
+
+Solution no 87
+[7, 4, 2, 8, 6, 1, 3, 5]
+
+Solution no 88
+[7, 5, 3, 1, 6, 8, 2, 4]
+
+Solution no 89
+[8, 2, 4, 1, 7, 5, 3, 6]
+
+Solution no 90
+[8, 2, 5, 3, 1, 7, 4, 6]
+
+Solution no 91
+[8, 3, 1, 6, 2, 5, 7, 4]
+
+Solution no 92
+[8, 4, 1, 3, 6, 2, 7, 5]
+Number of solutions = 92
+solve ran in: 0.11917901039123535 sec
+
+
+
+
+"""
+

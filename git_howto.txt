@@ -1,0 +1,60 @@
+YouTube Git Tutorial for beginners: Command-line Fundamentals
+git --version
+git config --list
+git config --global user.email "alxknit@gmail.com"
+git config --global user.name  "Alexander Maidis"
+
+# help system
+# next 2 are same
+git help config 
+git config --help
+
+Schenario 1) Existing project want to start work with git
+Schenario 2) Git project that you want to work with
+
+Schenario 1)
+    Initialize a Repository from existing code
+
+    git init // == video
+    
+        # inside project folder
+        Γράφει έναν κατάλογο .git μέσα στο folder
+        VIN Αν δεν θέλουμε κάποια στιγμή αυτό το project 
+        να το ανανεώνουμε στο git απλά σβήνουμε
+        "not track any more"
+        αυτόν τον κατάλογο .git
+
+    git status
+
+        Πρώτα συμπληρώνουμε το κάτω αρχείο με αυτά που δεν θέλουμε να πάνε στο git
+        touch .gitignore
+
+    git add -A
+    
+        All files add to git
+
+    git reset some.py
+
+        remove some.py from git track
+
+    git reset 
+
+        remove all files from git track
+
+    git commit -m "Initial commit"
+
+        commit with message
+
+    git log
+
+        show infos
+
+    git remote add origin https://github.com/alxknit/queensMac.git 
+
+        the http is from githup page on git under code
+
+    git remote -v 
+
+        verify the remote  url 
+
+    git push -u origin main

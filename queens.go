@@ -34,5 +34,6 @@ func main() {
 +-----------+------------+------------+------------+------------+
 | Time      | 1m37sec    | 116m33sec  |            |            |
 +-----------+------------+------------+------------+------------+
-
+// changes from cloned repo at
+	g:\My Drive\Programing\Git\Git_youTube\_importGit2\queens.go
 */
